@@ -1,0 +1,52 @@
+#******************************************************************************#
+# duncan_input.inp 
+#
+#    input parameters, used by VIE solver
+#
+# Neil Budko (c) 2015
+#******************************************************************************#
+# This input file is related to the problem by Duncan van der Heul
+#******************************************************************************#
+
+Lambda0 = 1.199169832 # wavelength in vacuum, m
+Freq = c0/Lambda0 # frequency, Hz
+Xdim = 1.0 # x-dimension of the computational domain, m
+Ydim = 1.0 # y-dimension of the computational domain, m
+Zdim = 1.0 # z-dimension of the computational domain, m
+EpsRelB = 1.0 # relative permittivity of the background
+EpsRelMax = 2.0 # maximum relative permittivity
+LambdaMed = Lambda0/sci.sqrt(sci.real(EpsRelMax)) # medium wavelength, m
+Kappa = 31 # desired discretization level, points per LambdaMed
+#Cell = LambdaMed/Kappa # desired elementray cell, m
+Cell = Xdim/Kappa # set to give integer Kappa per domain edge
+NX = round(Xdim/Cell)  # number of grid points in X-direction
+NY = round(Ydim/Cell)  # number of grid points in Y-direction
+NZ = round(Zdim/Cell)  # number of grid points in Z-direction
+
+PolX = -1.0/sci.sqrt(2.0) # x-component of the polarization vector (or dipole moment)
+PolY = 1.0/sci.sqrt(2.0) # y-component of the polarization vector (or dipole moment)
+PolZ = 0.0 # z-component of the polarization vector (or dipole moment)
+Xs = 100*Lambda0/sci.sqrt(2.0) # x-coordinate of the dipole-source, m
+Ys = 100*Lambda0/sci.sqrt(2.0) # y-coordinate of the dipole-source, m
+Zs = Zdim/2.0 # z-coordinate of the dipole-source, m
+Kx = -1.0/sci.sqrt(2.0) # x-component of the plane wave direction vector
+Ky = -1.0/sci.sqrt(2.0) # y-component of the plane wave direction vector
+Kz = 0.0 # z-component of the plane wave direction vector
+
+Xc = 0.5*Xdim # coordinates of the domain center
+Yc = 0.5*Ydim
+Zc = 0.5*Zdim
+Rr = 100*Lambda0 # distance to receiver from the domain center
+NumPhi = 180 # number of view angles over [0,pi] interval
+
+print 'NX =',NX,'NY =',NY,'NZ =',NZ #
+print 'Freq =',Freq, '(frequency, [Hz])' #
+print 'Lambda0 =',Lambda0, '(vacuum wavelength, [m])' #
+print 'EpsRelMax =',EpsRelMax, 'maximum relative permittivity' #
+print 'LambdaMed =',LambdaMed, '(minimum wavelength, [m])' #
+print 'Kappa =',Kappa, '(points per vacuum wavelength)' #
+print 'Cell =',Cell, '(discretization cell, [m])' #
+print 'KappaMed =',LambdaMed/Cell, '(points per medium wavelength)' #
+print '(PolX,PolY,PolZ)=(',PolX,PolY,PolZ,') polarization of source' #
+print '(Xs,Ys,Zs)=(',Xs,Ys,Zs,') coordinates of source, [m]' #
+

@@ -1,0 +1,25 @@
+#******************************************************************************#
+# basic_input.inp 
+#
+#    input parameters, used by VIE solver
+#
+# Neil Budko (c) 2015
+#******************************************************************************#
+
+Lambda0 = 0.9993081933333333 # wavelength in vacuum, m
+Freq = c0/Lambda0 # frequency, Hz
+Xdim,Ydim,Zdim = Lambda0,Lambda0,Lambda0 # dimensions of the computational domain, m
+EpsRelB = 1.0 # relative permittivity of the background
+EpsRelMax = 4.0 # maximum relative permittivity
+LambdaMed = Lambda0/sci.sqrt(sci.real(EpsRelMax)) # medium wavelength, m
+Kappa = 31 # desired discretization level, points per LambdaMed
+#Cell = LambdaMed/Kappa # desired elementray cell, m
+Cell = Xdim/Kappa
+NX,NY,NZ = round(Xdim/Cell),round(Ydim/Cell),round(Zdim/Cell)  # number of grid points in X-direction
+source = 'point dipole' # (or 'plane wave')
+PolX,PolY,PolZ = 0.0, 0.0, 1.0 # polarization vector (or dipole moment)
+Xs,Ys,Zs, = -100.0*Lambda0,Ydim/2.0,Zdim/2.0 # coordinates of the dipole-source, m
+Kx,Ky,Kz = 1.0, 0.0, 0.0 # plane wave wave-vector
+
+#******************************************************************************#
+

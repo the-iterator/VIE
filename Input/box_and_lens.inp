@@ -1,0 +1,69 @@
+Lambda0=2.4e-6 # wavelength in vacuum, m
+Freq=c0/Lambda0 # frequency, Hz
+Xdim=4.0*Lambda0 # x-dimension of the computational domain, m
+Ydim=4.0*Lambda0 # y-dimension of the computational domain, m
+Zdim=4.0*Lambda0 # z-dimension of the computational domain, m
+EpsRelB=1.48 # relative permittivity of the background (BK7 glass)
+EpsRelMax=1.6358+0.0025j # maximum relative permittivity (water)
+LambdaMed=Lambda0/sci.sqrt(sci.real(EpsRelMax)) # medium wavelength, m
+Kappa=15.0 # discretization level, points per LambdaMed
+Cell=LambdaMed/Kappa # elementray cell, m
+NX=round(Xdim/Cell)  # number of grid points in X-direction
+NY=round(Ydim/Cell)  # number of grid points in Y-direction
+NZ=round(Zdim/Cell)  # number of grid points in Z-direction
+Xp=int(round(NX/2)) # x-index of detector point with no eps variation
+Yp=int(round(NY/2)) # y-index of detector point with no eps variation
+Zp=int(round(NZ/2)) # z-index of detector point with no eps variation
+Xs=Xdim/2.0 # x-coordinate of the dipole-source, m
+Ys=Ydim/2.0 # y-coordinate of the dipole-source, m
+Zs=-2.0*Lambda0 # z-coordinate of the dipole-source, m
+PolX=1.0 # x-component of the dipole moment
+PolY=0.0 # y-component of the dipole moment
+PolZ=0.0 # z-component of the dipole moment
+print 'NX=',NX, '(cells in x-direction)' #
+print 'NY=',NY, '(cells in y-direction)' #
+print 'NZ=',NZ, '(cells in z-direction)' #
+print 'Freq=',Freq, '(frequency, [Hz])' #
+print 'Lambda0=',Lambda0, '(vacuum wavelength, [m])' #
+print 'EpsRelMax=',EpsRelMax, 'maximum relative permittivity' #
+print 'LambdaMed=',LambdaMed, '(minimum wavelength, [m])' #
+print 'Kappa=',Kappa, '(points per wavelength)' #
+print 'Cell=',Cell, '(discretization cell, [m])' #
+print '(Xs,Ys,Zs)=(',Xs,Ys,Zs,') coordinates of source, [m]' #
+print '(PolX,PolY,PolZ)=(',PolX,PolY,PolZ,') polarization of source' #
+print '(Xp,Yp,Zp)=(',Xp,Yp,Zp,') indices of no-eps-variation point' #
+
+####################################
+# Constructing an object
+####################################
+
+####################################
+# setting all permittivity to EpsRelB
+####################################
+EpsArrClean=sci.ones((NX,NY,NZ),complex) # array with all elements 1+0j
+EpsArrClean=EpsArrClean*EpsRelB
+
+####################################
+# adding a homogeneous brick to the domain
+# (repeat if needed)
+####################################
+CornerX=0.2*Lambda0 # corner coordinates of the brick, in Lambda0
+CornerY=0.2*Lambda0 # corner coordinates of the brick, in Lambda0
+CornerZ=0.2*Lambda0 # corner coordinates of the brick, in Lambda0
+Lx=3.6*Lambda0 # dimensions of the brick, in Lambda0
+Ly=3.6*Lambda0 # dimensions of the brick, in Lambda0
+Lz=3.6*Lambda0 # dimensions of the brick, in Lambda0
+EpsRel=1.6358+0.0025j # permittivity of the brick, can be complex
+addobject.brick(EpsArrClean,Cell,CornerX,CornerY,CornerZ,Lx,Ly,Lz,EpsRel)
+
+####################################
+# adding a homogeneous sphere to the domain
+# (repeat if needed)
+####################################
+Xc=2.0*Lambda0 # center coordinates of the sphere, in Lambda0
+Yc=2.0*Lambda0 # center coordinates of the sphere, in Lambda0
+Zc=0.0*Lambda0 # center coordinates of the sphere, in Lambda0
+Radius=1.0*Lambda0 # radius of the sphere, in Lambda0
+EpsRel=1.48 # permittivity of the sphere, can be complex
+addobject.sphere(EpsArrClean,Cell,Xc,Yc,Zc,Radius,EpsRel,NX,NY,NZ)
+
