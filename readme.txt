@@ -12,7 +12,7 @@ Neil Budko (c) 2015
 What it does:
 
 Given the source (location and polarization of a point-dipole 
-or direction and polarization a plane wave), the geometry, and 
+or direction and polarization of a plane wave), the geometry, and 
 the permittivity of an inhomogeneous scatterer, this Python 2.7/3 
 code computes the complex amplitude of the monochromatic electric 
 field over the computational domain (three components), displays 
