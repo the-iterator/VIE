@@ -74,7 +74,7 @@ f.close()
 
 #******************************************************************************#
 # Computing Ein
-# Possibilities: 
+# Possibilities:
 # Ein = incident.PointDipole(Freq,EpsRelB,Cell,NX,NY,NZ,Xs,Ys,Zs,PolX,PolY,PolZ)
 # Ein = incident.PlaneWave(Freq,EpsRelB,Cell,NX,NY,NZ,Kx,Ky,Kz,Xs,Ys,Zs,PolX,PolY,PolZ)
 #******************************************************************************#
@@ -203,6 +203,7 @@ vis.sliceFieldArr(sci.absolute(Etot),NX,NY,NZ,SliceX,SliceY,SliceZ,figNum,fieldN
 print('Computing force density...')
 t0 = time.clock()
 
+# To do: Here comes the computation of the force density
 
 t1 = time.clock()
 deltaT = t1-t0
