@@ -56,13 +56,12 @@ Set its name inside viepy2.py/viepy3.py
 2. Go to the main folder (/VIE/) and start ipython in terminal
 (if you are not in the main folder you can "cd" to it from inside ipython)
 
-3. In ipython type: run viepy2.py input_file 
-where 'input_file' is the name of your *.inp file without extension 
-(in ipython3 type: run viepy3.py input_file)
+3. In ipython type: run viepy2.py 
+(in ipython3 type: run viepy3.py)
 
 4. Watch the text output and wait for four figures to appear
 
-5. When done, close figures. You can change the input file and run 
+5. When done, you may close the figures, change the input file and run 
 viepy2.py/viepy3.py again, or exit ipython/ipython3 by typing 'exit'.
 
 5. For 3D visualization use Matlab with the data arrays in /Output/ folder.
