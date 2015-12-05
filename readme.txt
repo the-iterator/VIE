@@ -51,9 +51,9 @@ subfolder (VIE/Output) may be empty, will contain *.mat output files
 To run the code:
 
 1. Create your own or choose an existing input file inside /Input/ folder. 
-Set its name inside viepy2.py/viepy3.py
+Set its name inside viepy2.py or viepy3.py
 
-2. Go to the main folder (/VIE/) and start ipython in terminal
+2. Go to the main folder (/VIE/) and start ipython or ipython3 in terminal
 (if you are not in the main folder you can "cd" to it from inside ipython)
 
 3. In ipython type: run viepy2.py 
