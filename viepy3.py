@@ -151,6 +151,15 @@ tol = 1e-6 # relative residual tolerance
 restart = 300 # inner iterations
 maxiter = 300 # max total iterations
 
+# memory calculation
+MemReq = (restart+1)*Ein.nbytes + GF.nbytes + EpsArr.nbytes
+
+proceed = input('Max. required memory is '+str(round((MemReq/(1024*1024*1024)),2))+\
+                ' GB, proceed? [y/n]: ')
+
+if proceed == 'n':
+    sys.exit('PROGRAM ABORTED')
+
 # declearing the operator
 def AuClean(U):
     V = matvec.Au(U,GF,EpsArr,NX,NY,NZ)

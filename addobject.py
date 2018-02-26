@@ -14,12 +14,12 @@ import scipy as sci
 def brick(EpsArr,Cell,CornerX,CornerY,CornerZ,Lx,Ly,Lz,EpsRel):
   """This function adds a homogeneous parallelepiped and
      returns the 3D array of relative permittivity"""
-  NxBrickStart=round(CornerX/Cell)
-  NyBrickStart=round(CornerY/Cell)
-  NzBrickStart=round(CornerZ/Cell)
-  NxBrickEnd=round((CornerX+Lx)/Cell)
-  NyBrickEnd=round((CornerY+Ly)/Cell)
-  NzBrickEnd=round((CornerZ+Lz)/Cell)
+  NxBrickStart=int(round(CornerX/Cell))
+  NyBrickStart=int(round(CornerY/Cell))
+  NzBrickStart=int(round(CornerZ/Cell))
+  NxBrickEnd=int(round((CornerX+Lx)/Cell))
+  NyBrickEnd=int(round((CornerY+Ly)/Cell))
+  NzBrickEnd=int(round((CornerZ+Lz)/Cell))
 
   EpsArr[NxBrickStart:NxBrickEnd,NyBrickStart:NyBrickEnd,NzBrickStart:NzBrickEnd]=EpsRel
 
@@ -29,12 +29,12 @@ def randomfill(EpsArr,Cell,CornerX,CornerY,CornerZ,Lx,Ly,Lz,EpsRel,EpsDev):
   """This function adds a random perturbation to the permittivity
      inside a given parallelepiped and returns the modified 3D array
      of relative permittivity"""
-  NxBrickStart=round(CornerX/Cell)
-  NyBrickStart=round(CornerY/Cell)
-  NzBrickStart=round(CornerZ/Cell)
-  NxBrickEnd=round((CornerX+Lx)/Cell)
-  NyBrickEnd=round((CornerY+Ly)/Cell)
-  NzBrickEnd=round((CornerZ+Lz)/Cell)
+  NxBrickStart=int(round(CornerX/Cell))
+  NyBrickStart=int(round(CornerY/Cell))
+  NzBrickStart=int(round(CornerZ/Cell))
+  NxBrickEnd=int(round((CornerX+Lx)/Cell))
+  NyBrickEnd=int(round((CornerY+Ly)/Cell))
+  NzBrickEnd=int(round((CornerZ+Lz)/Cell))
 
   EpsArr[NxBrickStart:NxBrickEnd,NyBrickStart:NyBrickEnd,NzBrickStart:NzBrickEnd]=EpsRel-\
     EpsDev+2.*EpsDev*sci.random.rand(NxBrickEnd-NxBrickStart,

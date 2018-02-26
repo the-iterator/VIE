@@ -22,12 +22,12 @@ def Au(U,GF,EpsArr,NX,NY,NZ):
     Jext=sci.zeros((2*NX,2*NY,2*NZ,3),complex)
     JFext=sci.zeros((2*NX,2*NY,2*NZ,3),complex)
     Uext[0:NX,0:NY,0:NZ,:]=Uarr
+
     # contrast current array
-    s=0
-    while s<=2:
+    for s in range(3):
         Jext[0:NX,0:NY,0:NZ,s]=Uext[0:NX,0:NY,0:NZ,s]*(EpsArr[0:NX,0:NY,0:NZ]-1.0)
         JFext[:,:,:,s]=fft.fftn(sci.squeeze(Jext[:,:,:,s]))
-        s=s+1
+
     Vext[:,:,:,0]=Uext[:,:,:,0]-\
     fft.ifftn(sci.squeeze(sci.multiply(GF[:,:,:,0,0],JFext[:,:,:,0])+\
                           sci.multiply(GF[:,:,:,0,1],JFext[:,:,:,1])+\

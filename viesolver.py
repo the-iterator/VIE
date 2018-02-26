@@ -1,10 +1,11 @@
 #******************************************************************************#
 #
-#  viepy3mp.py
+#  viesolver.py
 #
 #  Python 3 (multiprocessing) version of VIE solver
+#  (pure solver, all input data, including object, is inside input file)
 #
-#  Neil Budko (c) 2012-2015
+#  Neil Budko (c) 2012-2016
 #  n.v.budko@gmail.com
 #
 #******************************************************************************#
@@ -20,7 +21,7 @@
 #
 # To run in background on Linux:
 # at now (press 'Enter')
-#   python viepy3.py (press 'Enter')
+#   python viesolver.py (press 'Enter')
 #   (press 'Ctrl+D')
 #
 # To monitor the output:
@@ -61,7 +62,7 @@ Eps0 = 1.0/(Mu0*c0*c0) # vacuum permittivity
 #******************************************************************************#
 # determining the current script directory
 myDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-fileName = myDir+'/Input/basic_input.inp' # name of the file with basic input
+fileName = myDir+'/Input/full_basic_input.inp' # name of the file with basic input
 f = open(fileName,'r') # open data file for reading
 print('data file:', fileName,'\n')
 print('Problem parameters:\n')
@@ -89,8 +90,15 @@ print('(Xs,Ys,Zs)=(',Xs,Ys,Zs,') coordinates of source, [m]')
 #******************************************************************************#
 t0 = time.clock()
 Ein = sci.zeros([NX,NY,NZ,3],complex)
-Ein = incident.PointDipole(Freq,EpsRelB,Cell,NX,NY,NZ,Xs,Ys,Zs,PolX,PolY,PolZ)
+if source == 'point dipole':
+    Ein = incident.PointDipole(Freq,EpsRelB,Cell,NX,NY,NZ,Xs,Ys,Zs,PolX,PolY,PolZ)
+elif source == 'plane wave':
+    Ein = incident.PlaneWave(Freq,EpsRelB,Cell,NX,NY,NZ,Kx,Ky,Kz,Xs,Ys,Zs,PolX,PolY,PolZ)
+else:
+    print('Unknown source type')
+    sys.exit('PROGRAM ABORTED')
 t1 = time.clock()
+
 # saving Ein in a *.mat file
 outFile = myDir+'/Output/IncidentField' # file name
 scio.savemat(outFile, {'Ein':Ein})
@@ -117,32 +125,6 @@ t1 = time.clock()
 #scio.savemat(outFile, {'GF':GF})
 deltaT = t1-t0
 print('GF tensor computed in',deltaT, 'seconds')
-
-#******************************************************************************#
-# Constructing an object
-#******************************************************************************#
-# setting all permittivity to EpsRelB
-EpsArr = sci.ones((NX,NY,NZ),complex) # array with all elements 1+0j
-EpsArr = EpsArr*EpsRelB
-
-# adding a homogeneous brick to the domain (repeat if necessary)
-CornerX,CornerY,CornerZ = 0.1*Xdim, 0.1*Ydim, 0.1*Zdim # corner coordinates of the brick, in [m] (use Lambda0)
-Lx,Ly,Lz = 0.8*Xdim, 0.8*Ydim, 0.8*Zdim # dimensions of the brick, in [m] (use Lambda0)
-EpsRel = 2.0 # permittivity of the brick, can be complex
-addobject.brick(EpsArr,Cell,CornerX,CornerY,CornerZ,Lx,Ly,Lz,EpsRel)
-
-
-# adding a homogeneous ball to the domain (repeat if necessary)
-Xc,Yc,Zc = 0.5*Xdim, 0.5*Ydim, 0.5*Zdim
-Radius = 0.3*Zdim
-EpsRel = 6.0
-addobject.sphere(EpsArr,Cell,Xc,Yc,Zc,Radius,EpsRel,NX,NY,NZ)
-
-# adding a homogeneous ball to the domain (repeat if necessary)
-Xc,Yc,Zc = 0.5*Xdim, 0.5*Ydim, 0.5*Zdim
-Radius = 0.2*Zdim
-EpsRel = 4.0
-addobject.sphere(EpsArr,Cell,Xc,Yc,Zc,Radius,EpsRel,NX,NY,NZ)
 
 # Plotting EpsArrClean
 figNum = 2
@@ -181,7 +163,7 @@ def solver():
         sys.exit('PROGRAM ABORTED')
 
     p = Pool(3) # creating a pool of workers/threads
-    
+
     # declearing the operator
     def AuClean(U):
         V = matvecpar.Au(U,GF,EpsArr,NX,NY,NZ,p)
@@ -205,8 +187,8 @@ def solver():
     scio.savemat(outFile, {'Etot':Etot})
 
     deltaT = t1-t0
-    print('Total field computed in', deltaT, 'seconds')
-    print('GMRES Info:', info)
+    print('GMRES finished in', deltaT, 'seconds')
+    print('Info:', info)
 
     # Plotting residual
     plt.ion()
@@ -239,7 +221,6 @@ def solver():
     print('***************\n')
 
     #******************************************************************************#
-    return
 
 if __name__ == '__main__':
 
